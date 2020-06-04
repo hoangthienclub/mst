@@ -13,8 +13,8 @@ export const getUsers = async (req, res, next) => {
     const totalUser = await User.count(query);
     const users = await User.find(query).limit(+pageSize).skip((+page - 1) * +pageSize);
     return Success(res, {
-      totalItem: totalUser,
-      data: users
+      totalUsers: totalUser,
+      users
     });
   } catch (err) {
     return next(err);
