@@ -20,8 +20,15 @@ export const register = async (req, res, next) => {
     if (!req.body.roleId) {
       req.body.roleId = 1;
     }
+    req.body.status = 1
     user = await new User({ ...req.body, email, password: hashPassword, key }).save();
-    return Success(res, user);
+
+    const accessToken = await handleToken({
+      userId: user._id,
+      email: user.email,
+      role: user.roleId,
+    });
+    return Success(res, { accessToken, user });
   } catch (err) {
     return next(err);
   }

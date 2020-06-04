@@ -9,8 +9,8 @@ const UserSchema = new mongoose.Schema(
     address: String,
     country: String,
     gender: String,
-    status: Number,
-    password: String
+    status: Number, //1: wait active, 2: active
+    password: String,
   },
   { timestamps: true, versionKey: false }
 );
