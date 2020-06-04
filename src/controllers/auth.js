@@ -11,8 +11,8 @@ import { appName, appEmail, frontendUrl } from '../helpers/constant';
 
 export const register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    let user = await User.findOne({ $or: [{ username }, { email }] }, 'email');
+    const { email, password } = req.body;
+    let user = await User.findOne({ $or: [{ email }] }, 'email');
     if (user) return email === user.email ? Failure(res, messages.EMAIL_EXISTED, 401) : Failure(res, messages.ACCOUNT_EXISTED, 401);
 
     const hashPassword = await bcrypt.hash(password, 10);
