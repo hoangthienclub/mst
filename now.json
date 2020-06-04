@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "builds": [{ "src": "src/app.js", "use": "@now/node" }],
+  "routes": [{ "src": "/(.*)", "headers": { "cache-control": "s-maxage=604800" }, "dest": "src/app.js" }],
+  "regions": ["sin1"]
+}

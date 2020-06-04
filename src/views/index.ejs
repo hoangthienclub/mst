@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+    <title>Psygital</title>
+    <style>
+      * {
+        font-size: 14px;
+      }
+      .table tr td {
+        padding: 2px 5px;
+      }
+      .wrapRoute {
+        max-width: 500px;
+        padding: 20px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="">
+      <div class="wrapRoute">
+        <% if (routersList) { %>
+        <table class="table table-bordered table-inline table-hover">
+          <tbody>
+            <tr>
+              <th>#</th>
+              <th>Method</th>
+              <th>Route</th>
+            </tr>
+            <% routersList.forEach(function(r, i){ %>
+            <tr>
+              <td style="width: 20px; text-align: center; color: #555;"><%= i+1 %></td>
+              <td style="width: 90px;"><%= r.method %></td>
+              <td><a href="javascript:void(0)"><%= r.path %></a></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>
