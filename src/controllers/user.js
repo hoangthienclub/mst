@@ -4,8 +4,18 @@ import { messages } from '../locales';
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await User.find({}, 'username email fullName thumbnail role status');
-    return Success(res, { users });
+    let query = {};
+    const { roleId, page = 1, pageSize = 10} = req.query;
+    if (roleId) {
+      query.roleId = roleId;
+    }
+    
+    const totalUser = await User.count(query);
+    const users = await User.find(query).limit(+pageSize).skip((+page - 1) * +pageSize);
+    return Success(res, {
+      totalItem: totalUser,
+      data: users
+    });
   } catch (err) {
     return next(err);
   }
