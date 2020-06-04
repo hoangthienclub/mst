@@ -4,6 +4,8 @@ import posts from './api/posts';
 import pages from './api/pages';
 import taxonomies from './api/taxonomies';
 import general from './api/general';
+import classes from './api/classes';
+import center from './api/center';
 
 export default (app) => {
   auth(app);
@@ -12,4 +14,6 @@ export default (app) => {
   pages(app);
   users(app);
   taxonomies(app);
+  classes(app);
+  center(app);
 };
