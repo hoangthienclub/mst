@@ -28,7 +28,7 @@ export const getUsers = async (req, res, next) => {
 export const getUserByUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user = await User.findOne({ _id: userId }, 'username email fullName phone thumbnail birthDay gender role status createdAt');
+    const user = await User.findOne({ _id: userId }, 'username email fullName phone thumbnail birthDay gender role status createdAt firstName lastName');
 
     if (!user) return Failure(res, messages.USER_NOT_FOUND, 404);
     return Success(res, { user });
