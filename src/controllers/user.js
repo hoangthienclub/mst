@@ -9,6 +9,10 @@ export const getUsers = async (req, res, next) => {
     if (roleId) {
       query.roleId = roleId;
     }
+
+    if (req.query.email) {
+      query.email = req.query.email;
+    }
     
     const totalUser = await User.count(query);
     const users = await User.find(query).limit(+pageSize).skip((+page - 1) * +pageSize);
