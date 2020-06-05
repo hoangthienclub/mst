@@ -6,6 +6,9 @@ const ClassSchema = new mongoose.Schema(
     subject: String,
     description: String,
     startTime: String,
+    duration: Number,
+    time: String,
+    date: Number,
     endTime: String,
     totalStudent: String,
     sambaUrl: String,
@@ -14,6 +17,8 @@ const ClassSchema = new mongoose.Schema(
     center: String,
     tutorDetail: Object,
     centerDetail: Object,
+    students: Array,
+    createdBy: String
   },
   { timestamps: true, versionKey: false }
 );

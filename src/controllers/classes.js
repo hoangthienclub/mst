@@ -53,6 +53,7 @@ export const createClass = async (req, res, next) => {
     const newItem = {
       ...body,
       tutor: user.userId,
+      createdBy: user.userId,
     };
     const newClass = await Classes(newItem).save();
     return Success(res, newClass);
