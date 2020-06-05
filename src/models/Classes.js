@@ -11,10 +11,7 @@ const ClassSchema = new mongoose.Schema(
       required: true
     },
     description: String,
-    startTime: {
-      type: String,
-      required: true
-    },
+    startTime: String,
     duration: {
       type: Number,
       required: true

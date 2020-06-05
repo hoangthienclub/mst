@@ -58,7 +58,7 @@ export const createClass = async (req, res, next) => {
     const newClass = await Classes(newItem).save();
     return Success(res, newClass);
   } catch (err) {
-    return next(err);
+    return Failure(err);
   }
 };
 
