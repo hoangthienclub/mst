@@ -12,6 +12,8 @@ const ClassSchema = new mongoose.Schema(
     type: Number,
     tutor: String,
     center: String,
+    tutorDetail: Object,
+    centerDetail: Object,
   },
   { timestamps: true, versionKey: false }
 );
