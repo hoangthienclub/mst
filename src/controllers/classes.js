@@ -52,8 +52,8 @@ export const createClass = async (req, res, next) => {
     const user = req.authorization;
     const newItem = {
       ...body,
-      tutor: user.userId,
-      createdBy: user.userId,
+      userId: user.userId,
+      centerId: user.userId
     };
     const newClass = await Classes(newItem).save();
     return Success(res, newClass);

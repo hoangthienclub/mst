@@ -11,36 +11,32 @@ const ClassSchema = new mongoose.Schema(
       required: true
     },
     description: String,
-    startTime: String,
+    startTime: {
+      type: Number, 
+      required: true
+    },
     duration: {
       type: Number,
       required: true
     },
-    time: {
+    sambaUrl: {
       type: String,
-      required: true
+      default: ''
     },
-    date: {
-      type: Number,
-      required: true
-    },
-    endTime: String,
-    totalStudent: String,
-    sambaUrl: String,
     type: {
       type: Number,
       required: true,
       default: 1
     },
-    tutor: {
+    tutorId: {
+      type: String
+    },
+    centerId: {
       type: String,
       required: true
     },
-    center: String,
-    tutorDetail: Object,
-    centerDetail: Object,
     students: Array,
-    createdBy: {
+    userId: {
       type: String,
       required: true
     },
