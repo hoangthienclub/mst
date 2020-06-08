@@ -16,33 +16,41 @@ export const getClasses = async (req, res, next) => {
     if (status !== '6') {
       totalClass = await Classes.count(query);
       classes = await Classes.find(query)
-        .populate([{
-          path: 'userId',
-          model: 'users'
-        }, {
-          path: 'students',
-          model: 'users'
-        }, {
-          path: 'centerId',
-          model: 'users'
-        }])
+        .populate([
+          {
+            path: 'userId',
+            model: 'users',
+          },
+          {
+            path: 'students',
+            model: 'users',
+          },
+          {
+            path: 'centerId',
+            model: 'users',
+          },
+        ])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize);
     }
-    if(status === '6') {
+    if (status === '6') {
       delete query.type;
-      totalClass = await Classes.count({$or: [{type: 4}, {type: 5 }]});
-      classes = await Classes.find({$or: [{type: 4}, {type: 5 }]})
-        .populate([{
-          path: 'userId',
-          model: 'users'
-        }, {
-          path: 'students',
-          model: 'users'
-        }, {
-          path: 'students',
-          model: 'users'
-        }])
+      totalClass = await Classes.count({ $or: [{ type: 4 }, { type: 5 }] });
+      classes = await Classes.find({ $or: [{ type: 4 }, { type: 5 }] })
+        .populate([
+          {
+            path: 'userId',
+            model: 'users',
+          },
+          {
+            path: 'students',
+            model: 'users',
+          },
+          {
+            path: 'students',
+            model: 'users',
+          },
+        ])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize);
     }
@@ -62,15 +70,28 @@ export const getClasses = async (req, res, next) => {
 // students: Array,
 // userId: {
 
-
-export const getDetail = async (array) => {
-  const promises = array.map(async (item) => {
-    item.tutorDetail= await User.findOne({_id: item.tutor});
-    item.centerDetail= await Center.findOne({_id: item.center});
-    return item;
-  });
-  return Promise.all(promises);
-}
+export const getClassDetail = async (req, res, next) => {
+  try {
+    const { classId } = req.params;
+    const classDetail = await Classes.findOne({ _id: classId }).populate([
+      {
+        path: 'userId',
+        model: 'users',
+      },
+      {
+        path: 'students',
+        model: 'users',
+      },
+      {
+        path: 'students',
+        model: 'users',
+      },
+    ]);
+    return Success(res, classDetail);
+  } catch (err) {
+    return next(err);
+  }
+};
 
 export const createClass = async (req, res, next) => {
   try {
@@ -79,7 +100,7 @@ export const createClass = async (req, res, next) => {
     const newItem = {
       ...body,
       userId: user.userId,
-      centerId: user.userId
+      centerId: user.userId,
     };
     const newClass = await Classes(newItem).save();
     return Success(res, newClass);
