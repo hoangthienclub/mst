@@ -16,17 +16,35 @@ export const getClasses = async (req, res, next) => {
     if (status !== '6') {
       totalClass = await Classes.count(query);
       classes = await Classes.find(query)
+        .populate([{
+          path: 'userId',
+          model: 'users'
+        }, {
+          path: 'students',
+          model: 'users'
+        }, {
+          path: 'centerId',
+          model: 'users'
+        }])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize);
-    classes = await getDetail(classes);
     }
     if(status === '6') {
       delete query.type;
       totalClass = await Classes.count({$or: [{type: 4}, {type: 5 }]});
       classes = await Classes.find({$or: [{type: 4}, {type: 5 }]})
+        .populate([{
+          path: 'userId',
+          model: 'users'
+        }, {
+          path: 'students',
+          model: 'users'
+        }, {
+          path: 'students',
+          model: 'users'
+        }])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize);
-        classes = await getDetail(classes);
     }
     return Success(res, {
       totalClasses: totalClass,
@@ -36,6 +54,14 @@ export const getClasses = async (req, res, next) => {
     return next(err);
   }
 };
+
+// centerId: {
+//   type: String,
+//   required: true
+// },
+// students: Array,
+// userId: {
+
 
 export const getDetail = async (array) => {
   const promises = array.map(async (item) => {
@@ -58,7 +84,7 @@ export const createClass = async (req, res, next) => {
     const newClass = await Classes(newItem).save();
     return Success(res, newClass);
   } catch (err) {
-    return Failure(err);
+    return Failure(res, err);
   }
 };
 

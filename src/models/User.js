@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema(
     gender: String,
     status: Number, //1: wait active, 2: active
     password: String,
+    thumbnail: String,
     avatar: String,
   },
   { timestamps: true, versionKey: false }
