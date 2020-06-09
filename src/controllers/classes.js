@@ -18,7 +18,7 @@ export const getClasses = async (req, res, next) => {
       classes = await Classes.find(query)
         .populate([
           {
-            path: 'userId',
+            path: 'tutor',
             model: 'users',
           },
           {
@@ -26,12 +26,13 @@ export const getClasses = async (req, res, next) => {
             model: 'users',
           },
           {
-            path: 'centerId',
+            path: 'center',
             model: 'users',
           },
         ])
         .limit(+pageSize)
-        .skip((+page - 1) * +pageSize);
+        .skip((+page - 1) * +pageSize)
+        .sort({ createdAt: -1 });
     }
     if (status === '6') {
       delete query.type;
@@ -39,7 +40,7 @@ export const getClasses = async (req, res, next) => {
       classes = await Classes.find({ $or: [{ type: 4 }, { type: 5 }] })
         .populate([
           {
-            path: 'userId',
+            path: 'tutor',
             model: 'users',
           },
           {
@@ -47,7 +48,7 @@ export const getClasses = async (req, res, next) => {
             model: 'users',
           },
           {
-            path: 'students',
+            path: 'center',
             model: 'users',
           },
         ])
@@ -75,7 +76,7 @@ export const getClassDetail = async (req, res, next) => {
     const { classId } = req.params;
     const classDetail = await Classes.findOne({ _id: classId }).populate([
       {
-        path: 'userId',
+        path: 'tutor',
         model: 'users',
       },
       {
@@ -83,7 +84,7 @@ export const getClassDetail = async (req, res, next) => {
         model: 'users',
       },
       {
-        path: 'students',
+        path: 'center',
         model: 'users',
       },
     ]);

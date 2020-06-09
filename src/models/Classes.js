@@ -43,5 +43,19 @@ const ClassSchema = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
+ClassSchema.virtual('center', {
+  ref: 'center',
+  localField: 'centerId',
+  foreignField: '_id',
+  justOne: true,
+});
+ClassSchema.virtual('tutor', {
+  ref: 'users',
+  localField: 'userId',
+  foreignField: '_id',
+  justOne: true,
+});
+ClassSchema.set('toObject', { virtuals: true });
+ClassSchema.set('toJSON', { virtuals: true });
 const Classes = mongoose.model('class', ClassSchema);
 export default Classes;

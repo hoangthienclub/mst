@@ -4,6 +4,7 @@ export default {
   REQUEST_TIMEOUT: 'Hết thời gian yêu cầu.',
   INTERNAL_SERVER_ERROR: 'Lỗi máy chủ.',
   ACCOUNT_IS_REQUIRED: 'Vui lòng nhập tên tài khoản. ',
+  USERID_IS_REQUIRED: 'Vui lòng nhập mã số tài khoản. ',
   ACCOUNT_EXISTED: 'Tên tài khoản đã được sử dụng.',
   CANNOT_UPDATE_ACCOUNT: 'Không thể đổi tên tài khoản.',
   ACCOUNT_NOT_FOUND: 'Tài khoản hoặc email không tồn tại.',

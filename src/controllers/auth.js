@@ -36,20 +36,20 @@ export const register = async (req, res, next) => {
 
 export const verify = async (req, res, next) => {
   try {
-    const { username, key } = req.params;
+    const { userId, key } = req.params;
 
-    let user = await User.findOne({ username }, 'key status');
+    let user = await User.findOne({ _id: userId }, 'key status');
     if (!user) return Failure(res, messages.USER_NOT_FOUND, 404);
-    if (user.status === 1) return Failure(res, messages.ACCOUNT_IS_ACTIVATED, 404);
+    if (user.status === 2) return Failure(res, messages.ACCOUNT_IS_ACTIVATED, 404);
     if (user.key !== key) return Failure(res, messages.KEY_NOT_FOUND, 404);
 
     user = await User.findOneAndUpdate(
-      { username, key },
-      { $set: { status: 1, key: null } },
+      { _id: userId, key },
+      { $set: { status: 2, key: null } },
       {
         runValidators: true,
         new: true,
-        select: 'username email status',
+        select: 'email status',
       }
     );
     return Success(res, { user });
@@ -87,7 +87,7 @@ export const passwordReset = async (req, res, next) => {
     if (req.method === 'POST') {
       const { email } = req.body;
       let user = await User.findOne({ email }, 'username email status');
-      const username = user.username;
+      const username = user._id;
       if (!user) return Failure(res, messages.EMAIL_NOT_FOUND, 404);
       if (user.status === 0) return Failure(res, messages.PLEASE_ACTIVE_ACCOUNT_FIRST, 401);
 
@@ -101,6 +101,8 @@ export const passwordReset = async (req, res, next) => {
           select: 'username key',
         }
       );
+
+      console.log("user=", user);
 
       sendMail({
         to: email,
@@ -117,8 +119,8 @@ export const passwordReset = async (req, res, next) => {
     }
 
     if (req.method === 'GET') {
-      const { username, key } = req.params;
-      let user = await User.findOne({ username }, 'username key status').lean();
+      const { userId, key } = req.params;
+      let user = await User.findOne({ _id: userId }, 'email key status').lean();
       if (!user) return Failure(res, messages.USERNAME_NOT_FOUND, 404);
       if (user.status === 0) return Failure(res, messages.PLEASE_ACTIVE_ACCOUNT_FIRST, 401);
       if (user.key !== key) return Failure(res, messages.KEY_NOT_FOUND, 404);
@@ -127,20 +129,20 @@ export const passwordReset = async (req, res, next) => {
     }
 
     if (req.method === 'PUT') {
-      const { username, key, password } = req.body;
-      let user = await User.findOne({ username }, 'username key status');
+      const { email, key, password } = req.body;
+      let user = await User.findOne({ email }, 'email key status');
       if (!user) return Failure(res, messages.USERNAME_NOT_FOUND, 404);
       if (user.status === 0) return Failure(res, messages.PLEASE_ACTIVE_ACCOUNT_FIRST, 401);
       if (user.key !== key) return Failure(res, messages.KEY_NOT_FOUND, 404);
 
       const hashPassword = await bcrypt.hash(password, 10);
       await User.findOneAndUpdate(
-        { username, key },
+        { email, key },
         { $set: { password: hashPassword, key: null } },
         {
           runValidators: true,
           new: true,
-          select: 'username',
+          select: 'email',
         }
       );
       return Success(res, {});

@@ -16,9 +16,9 @@ export default (app) => {
   );
 
   app.get(
-    '/verify/:username/:key',
+    '/verify/:userId/:key',
     [
-      param('username').trim().not().isEmpty().withMessage(messages.ACCOUNT_IS_REQUIRED),
+      param('userId').trim().not().isEmpty().withMessage(messages.USERID_IS_REQUIRED),
       param('key').trim().not().isEmpty().withMessage(messages.KEY_IS_REQUIRED),
     ],
     Validate,
@@ -43,9 +43,9 @@ export default (app) => {
   );
 
   app.get(
-    '/password-reset/:username/:key',
+    '/password-reset/:userId/:key',
     [
-      param('username').trim().not().isEmpty().withMessage(messages.ACCOUNT_IS_REQUIRED),
+      param('userId').trim().not().isEmpty().withMessage(messages.USERID_IS_REQUIRED),
       param('key').trim().not().isEmpty().withMessage(messages.KEY_IS_REQUIRED),
     ],
     Validate,
@@ -55,7 +55,7 @@ export default (app) => {
   app.put(
     '/password-reset',
     [
-      body('username').trim().not().isEmpty().withMessage(messages.ACCOUNT_IS_REQUIRED),
+      body('email').trim().not().isEmpty().withMessage(messages.EMAIL_IS_REQUIRED),
       body('key').trim().not().isEmpty().withMessage(messages.KEY_IS_REQUIRED),
       body('password').trim().not().isEmpty().withMessage(messages.PASSWORD_IS_REQUIRED),
     ],

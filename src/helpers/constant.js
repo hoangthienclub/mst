@@ -15,7 +15,7 @@ export const dbPass = process.env.DB_PASS || 'Aa123456';
 export const frontendUrl = process.env.FRONTEND_URL || 'https://sihoang.io';
 export const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || 'b3JkZXJfaWQ9NzkzNjd8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE2LTA0LTEyIDAyOjAyOjA5';
 export const accessTokenExpire = process.env.ACCESS_TOKEN_EXPIRE || '30d';
-export const sendgridApiKey = process.env.SENDGRID_API_KEY || '';
+export const sendgridApiKey = process.env.SENDGRID_API_KEY || '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';
 
 export const awsAccessId = process.env.AWSE_ACCESS_ID || '';
 export const awsSecretAccessKey = process.env.AWSE_SECRET_ACCESS_KEY || '';
