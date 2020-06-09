@@ -8,7 +8,7 @@ export const getClasses = async (req, res, next) => {
     let query = {};
     const { page = 1, pageSize = 10, status } = req.query;
     if (status) {
-      query.type = status;
+      query.status = status;
     }
 
     let totalClass = 0;
@@ -35,9 +35,9 @@ export const getClasses = async (req, res, next) => {
         .sort({ createdAt: -1 });
     }
     if (status === '5') {
-      delete query.type;
-      totalClass = await Classes.count({ $or: [{ type: 3 }, { type: 4 }] });
-      classes = await Classes.find({ $or: [{ type: 4 }, { type: 3 }] })
+      delete query.status;
+      totalClass = await Classes.count({ $or: [{ status: 3 }, { status: 4 }] });
+      classes = await Classes.find({ $or: [{ status: 4 }, { status: 3 }] })
         .populate([
           {
             path: 'tutor',

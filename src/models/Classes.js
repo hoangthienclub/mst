@@ -23,7 +23,7 @@ const ClassSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    type: {
+    status: {
       type: Number,
       required: true,
       default: 1
