@@ -5,7 +5,7 @@ import { messages } from '../locales';
 export const getUsers = async (req, res, next) => {
   try {
     let query = {};
-    const { roleId, page = 1, pageSize = 10} = req.query;
+    const { roleId, page = 1, pageSize = 10 } = req.query;
     if (roleId) {
       query.roleId = roleId;
     }
@@ -13,7 +13,7 @@ export const getUsers = async (req, res, next) => {
     if (req.query.email) {
       query.email = req.query.email;
     }
-    
+
     const totalUser = await User.count(query);
     const users = await User.find(query).limit(+pageSize).skip((+page - 1) * +pageSize);
     return Success(res, {
@@ -104,3 +104,49 @@ export const deleteUserByUserId = async (req, res, next) => {
     return next(err);
   }
 };
+
+
+export const addFavorite = async (req, res, next) => {
+  console.log('thien')
+  try {
+    const { userIds } = req.body;
+    const user = req.authorization;
+    await User.findOneAndUpdate({
+      _id: user.userId
+    }, { $addToSet: { favorites: { $each: userIds } } });
+    
+    let userData = await User.findOne({_id: user.userId})
+      .populate([
+        {
+          path: 'favorites',
+          model: 'users',
+        }])
+      .lean(); // dùng lean để trả về 1 kết quả JSON,
+    return Success(res, userData.favorites);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export const deleteFavorite = async (req, res, next) => {
+  try {
+    const { userIds } = req.body;
+    const user = req.authorization;
+    await User.findOneAndUpdate({
+      _id: user.userId
+    }
+      , { $pull: { favorites: { $in: userIds } } }
+      , { multi: true});
+
+      let userData = await User.findOne({_id: user.userId})
+      .populate([
+        {
+          path: 'favorites',
+          model: 'users',
+        }])
+      .lean(); // dùng lean để trả về 1 kết quả JSON,
+    return Success(res, userData.favorites);
+  } catch (err) {
+    return next(err);
+  }
+}

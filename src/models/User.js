@@ -23,7 +23,8 @@ const UserSchema = new mongoose.Schema(
     isDelete: {
       default: false,
       type: Boolean
-    }
+    },
+    favorites: Array
   },
   { timestamps: true, versionKey: false }
 );

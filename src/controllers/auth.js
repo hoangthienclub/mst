@@ -63,7 +63,13 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
     let user = await User.findOne(
       { $or: [{ email }] }
-    ).lean(); // dùng lean để trả về 1 kết quả JSON, nhẹ hơn
+    )
+    .populate([
+      {
+        path: 'favorites',
+        model: 'users',
+      }])
+    .lean(); // dùng lean để trả về 1 kết quả JSON, nhẹ hơn
 
     if (!user) return Failure(res, messages.ACCOUNT_NOT_FOUND, 404);
     const match = await bcrypt.compare(password, user.password);
