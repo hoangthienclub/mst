@@ -25,6 +25,38 @@ export const getUsers = async (req, res, next) => {
   }
 };
 
+export const updateStatusUsers = async (req, res, next) => {
+  try {
+    const { userIds, status } = req.body;
+    await User.updateMany({
+      _id: {
+        $in: userIds
+      }
+    }, {
+      status
+    });
+    return Success(res, {});
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export const deleteUsers = async (req, res, next) => {
+  try {
+    const { userIds } = req.body;
+    await User.updateMany({
+      _id: {
+        $in: userIds
+      }
+    }, {
+      isDelete: true
+    });
+    return Success(res, {});
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export const getUserByUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -48,7 +80,7 @@ export const updateUserByUserId = async (req, res, next) => {
       {
         runValidators: true,
         new: true,
-        select: 'username email fullName phone thumbnail birthDay gender role status createdAt updatedAt firstName lastName',
+        select: 'username email fullName phone thumbnail birthDay gender role status createdAt updatedAt',
       }
     );
     if (!user) return Failure(res, messages.USER_NOT_FOUND, 404);

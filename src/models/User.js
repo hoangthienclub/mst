@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema(
     key: {
       default: 'bd346535-5f16-422a-9830-3593120d0d14',
       type:  String
+    },
+    isDelete: {
+      default: false,
+      type: Boolean
     }
   },
   { timestamps: true, versionKey: false }
