@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 import { body } from 'express-validator';
-import { getUsers, getUserByUserId, updateUserByUserId, deleteUserByUserId, updateStatusUsers, deleteUsers, addFavorite, deleteFavorite } from '../../controllers/user';
+import { getUsers, getUserByUserId, updateUserByUserId, deleteUserByUserId, updateStatusUsers, deleteUsers, addFavorite, deleteFavorite, searchUsers } from '../../controllers/user';
 import { isAuth } from '../../middleware/auth';
 import { Validate } from '../../helpers';
 import { messages } from '../../locales';
 
 export default (app) => {
   app.get('/users', isAuth, getUsers);
+  app.get('/users-search', isAuth, searchUsers);
   app.get('/users/:userId', isAuth, getUserByUserId);
   app.put(
     '/users/:userId',

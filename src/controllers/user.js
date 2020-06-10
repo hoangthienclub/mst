@@ -150,3 +150,16 @@ export const deleteFavorite = async (req, res, next) => {
     return next(err);
   }
 }
+
+export const searchUsers = async (req, res, next) => {
+  try {
+    let query = {};
+    if (req.query.text) {
+      query.email = { $regex: new RegExp(req.query.text, 'i')}
+    }
+    const users = await User.find(query);
+    return Success(res, users);
+  } catch (err) {
+    return next(err);
+  }
+};
