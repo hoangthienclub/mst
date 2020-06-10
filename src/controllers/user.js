@@ -163,3 +163,19 @@ export const searchUsers = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const getFavoritesUser = async (req, res, next) => {
+  try {
+    const user = req.authorization;
+    let userData = await User.findOne({_id: user.userId})
+      .populate([
+        {
+          path: 'favorites',
+          model: 'users',
+        }])
+      .lean(); // dùng lean để trả về 1 kết quả JSON,
+    return Success(res, userData.favorites);
+  } catch (err) {
+    return next(err);
+  }
+};
