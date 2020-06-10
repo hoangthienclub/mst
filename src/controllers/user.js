@@ -122,7 +122,10 @@ export const addFavorite = async (req, res, next) => {
           model: 'users',
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
-    return Success(res, userData.favorites);
+      return Success(res, {
+        totalUsers: 0,
+        users: userData.favorites
+      });
   } catch (err) {
     return next(err);
   }
@@ -145,7 +148,10 @@ export const deleteFavorite = async (req, res, next) => {
           model: 'users',
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
-    return Success(res, userData.favorites);
+      return Success(res, {
+        totalUsers: 0,
+        users: userData.favorites
+      });
   } catch (err) {
     return next(err);
   }
@@ -174,7 +180,10 @@ export const getFavoritesUser = async (req, res, next) => {
           model: 'users',
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
-    return Success(res, userData.favorites);
+    return Success(res, {
+      totalUsers: 0,
+      users: userData.favorites
+    });
   } catch (err) {
     return next(err);
   }
