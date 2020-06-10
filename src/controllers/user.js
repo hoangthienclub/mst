@@ -160,11 +160,16 @@ export const deleteFavorite = async (req, res, next) => {
 export const searchUsers = async (req, res, next) => {
   try {
     let query = {};
+    const user = req.authorization;
     if (req.query.text) {
       query.email = { $regex: new RegExp(req.query.text, 'i')}
     }
-    const users = await User.find(query);
-    return Success(res, users);
+    let users = await User.find(query);
+    users = users.filter(i => i._id != user.userId);
+    return Success(res, {
+      totalUsers: 0,
+      users
+    });
   } catch (err) {
     return next(err);
   }
