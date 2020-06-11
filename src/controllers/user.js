@@ -114,18 +114,18 @@ export const addFavorite = async (req, res, next) => {
     await User.findOneAndUpdate({
       _id: user.userId
     }, { $addToSet: { favorites: { $each: userIds } } });
-    
-    let userData = await User.findOne({_id: user.userId})
+
+    let userData = await User.findOne({ _id: user.userId })
       .populate([
         {
           path: 'favorites',
           model: 'users',
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
-      return Success(res, {
-        totalUsers: 0,
-        users: userData.favorites
-      });
+    return Success(res, {
+      totalUsers: 0,
+      users: userData.favorites
+    });
   } catch (err) {
     return next(err);
   }
@@ -139,19 +139,19 @@ export const deleteFavorite = async (req, res, next) => {
       _id: user.userId
     }
       , { $pull: { favorites: { $in: userIds } } }
-      , { multi: true});
+      , { multi: true });
 
-      let userData = await User.findOne({_id: user.userId})
+    let userData = await User.findOne({ _id: user.userId })
       .populate([
         {
           path: 'favorites',
           model: 'users',
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
-      return Success(res, {
-        totalUsers: 0,
-        users: userData.favorites
-      });
+    return Success(res, {
+      totalUsers: 0,
+      users: userData.favorites
+    });
   } catch (err) {
     return next(err);
   }
@@ -162,7 +162,7 @@ export const searchUsers = async (req, res, next) => {
     let query = {};
     const user = req.authorization;
     if (req.query.text) {
-      query.email = { $regex: new RegExp(req.query.text, 'i')}
+      query.email = { $regex: new RegExp(req.query.text, 'i') }
     }
     let users = await User.find(query);
     users = users.filter(i => i._id != user.userId);
@@ -178,11 +178,18 @@ export const searchUsers = async (req, res, next) => {
 export const getFavoritesUser = async (req, res, next) => {
   try {
     const user = req.authorization;
-    let userData = await User.findOne({_id: user.userId})
+    let limit = null;
+    if (req.query.limit) {
+      limit = req.query.limit;
+    }
+    let userData = await User.findOne({ _id: user.userId })
       .populate([
         {
           path: 'favorites',
           model: 'users',
+          options: {
+            limit: limit
+          }
         }])
       .lean(); // dùng lean để trả về 1 kết quả JSON,
     return Success(res, {
@@ -190,6 +197,6 @@ export const getFavoritesUser = async (req, res, next) => {
       users: userData.favorites
     });
   } catch (err) {
-    return next(err);
+    return console.log(err);
   }
 };
