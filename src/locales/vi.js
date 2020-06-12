@@ -41,4 +41,7 @@ export default {
   // Taxonomy
   TAXONOMY_TYPE_IS_REQUIRED: 'Vui lòng chọn kiểu của Phân loại.',
   TAXONOMY_TYPE_IS_INVALID: 'Kiểu phân loại sai định dạng (Định dạng là 1, 2).',
+  // Class
+  CLASS_HAVE_COMPLETED: 'Lớp học này đã hoàn thành hoặc huỷ. Vui lòng chọn lớp khác.',
+  ALREADY_JOIN_CLASS: 'Bạn đã đăng ký lớp học này.'
 };
