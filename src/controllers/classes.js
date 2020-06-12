@@ -30,6 +30,14 @@ export const getClasses = async (req, res, next) => {
             path: 'center',
             model: 'users',
           },
+          {
+            path: 'subject',
+            model: 'subject',
+          },
+          {
+            path: 'subjectLevel',
+            model: 'subjectlevel',
+          },
         ])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize)
@@ -52,6 +60,14 @@ export const getClasses = async (req, res, next) => {
             path: 'center',
             model: 'users',
           },
+          {
+            path: 'subject',
+            model: 'subject',
+          },
+          {
+            path: 'subjectLevel',
+            model: 'subjectlevel',
+          },
         ])
         .limit(+pageSize)
         .skip((+page - 1) * +pageSize);
@@ -61,7 +77,7 @@ export const getClasses = async (req, res, next) => {
       classes,
     });
   } catch (err) {
-    return next(err);
+    return Failure(res, err);
   }
 };
 

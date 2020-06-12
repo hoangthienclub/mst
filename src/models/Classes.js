@@ -6,7 +6,11 @@ const ClassSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    subject: {
+    subjectId : {
+      type: String,
+      required: true
+    },
+    subjectLevelId : {
       type: String,
       required: true
     },
@@ -43,7 +47,7 @@ const ClassSchema = new mongoose.Schema(
     price: {
       type: Number,
       default: 0
-    }
+    },
   },
   { timestamps: true, versionKey: false }
 );
@@ -56,6 +60,18 @@ ClassSchema.virtual('center', {
 ClassSchema.virtual('tutor', {
   ref: 'users',
   localField: 'userId',
+  foreignField: '_id',
+  justOne: true,
+});
+ClassSchema.virtual('subject', {
+  ref: 'subjects',
+  localField: 'subjectId',
+  foreignField: '_id',
+  justOne: true,
+});
+ClassSchema.virtual('subjectLevel', {
+  ref: 'subjectlevels',
+  localField: 'subjectLevelId',
   foreignField: '_id',
   justOne: true,
 });
