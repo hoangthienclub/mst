@@ -160,8 +160,7 @@ export const bookClass = async (req, res, next) => {
 export const getRegisteredClasses = async (req, res, next) => {
   try {
     let query = {};
-    const { page = 1, pageSize = 10, status } = req.query;
-    const { userId } = req.body;
+    const { page = 1, pageSize = 10, status, userId } = req.query;
     if (status) {
       query.status = status;
     }
