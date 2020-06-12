@@ -14,6 +14,10 @@ export const getUsers = async (req, res, next) => {
       query.email = req.query.email;
     }
 
+    if (req.query.search) {
+      query.email = { $regex: new RegExp(req.query.text, 'i') }
+    }
+
     const totalUser = await User.count(query);
     const users = await User.find(query).limit(+pageSize).skip((+page - 1) * +pageSize);
     return Success(res, {
