@@ -141,7 +141,6 @@ export const bookClass = async (req, res, next) => {
   try {
     const { classId } = req.params;
     const { userId } = req.body;
-    console.log('body=', userId);
     let classDetail = await Classes.findById(classId);
     if (classDetail.status === 3 || classDetail.status === 4) {
       return Failure(res, messages.CLASS_HAVE_COMPLETED, 500);
