@@ -6,6 +6,8 @@ import taxonomies from './api/taxonomies';
 import general from './api/general';
 import classes from './api/classes';
 import center from './api/center';
+import subjectLevel from './api/subjectLevel';
+import subject from './api/subject';
 
 export default (app) => {
   auth(app);
@@ -16,4 +18,6 @@ export default (app) => {
   taxonomies(app);
   classes(app);
   center(app);
+  subjectLevel(app);
+  subject(app);
 };
