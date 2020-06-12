@@ -83,7 +83,7 @@ export const updateUserByUserId = async (req, res, next) => {
       {
         runValidators: true,
         new: true,
-        select: 'username email fullName phone thumbnail birthDay gender role status createdAt updatedAt',
+        select: 'username email fullName phone thumbnail birthDay gender role status createdAt updatedAt firstName lastName educationLevel schoolName preferredLanguage countryOfResidence language nationality addressLine1 addressLine2 city state zipCode country mobilePhone phoneNumber1 phoneNumber2',
       }
     );
     if (!user) return Failure(res, messages.USER_NOT_FOUND, 404);
