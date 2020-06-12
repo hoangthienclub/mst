@@ -8,5 +8,5 @@ export default (app) => {
   app.post('/class', isAuth, createClass);
   app.delete('/classes', isAuth, deleteAllClass);
   app.post('/bookClass/:classId', isAuth, bookClass);
-  app.get('/registeredClass', isAuth, getRegisteredClasses);
+  app.get('/registeredClasses', isAuth, getRegisteredClasses);
 };
