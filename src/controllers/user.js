@@ -200,3 +200,13 @@ export const getFavoritesUser = async (req, res, next) => {
     return console.log(err);
   }
 };
+
+export const createUser = async (req, res, next) => {
+  try {
+    const data = req.body;
+    let user = await new User(data).save();
+    return Success(res, user);
+  } catch (err) {
+    return next(err);
+  }
+};

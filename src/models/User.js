@@ -24,7 +24,22 @@ const UserSchema = new mongoose.Schema(
       default: false,
       type: Boolean
     },
-    favorites: Array
+    favorites: Array,
+    education: String,
+    schoolName: String,
+    preferredLanguage: String,
+    birthday: String,
+    countryOfResidence: String,
+    language: String,
+    nationality: String,
+    addressLine1: String,
+    addressLine2: String,
+    city: String,
+    state: String,
+    zipCode: Number,
+    mobilePhone: String,
+    phoneNumber1: String,
+    phoneNumber2: String,
   },
   { timestamps: true, versionKey: false }
 );
