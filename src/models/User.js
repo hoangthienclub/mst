@@ -1,7 +1,10 @@
 import mongoose from '../config/database';
 const UserSchema = new mongoose.Schema(
   {
-    email: String,
+    email: {
+      type: String,
+      required: true
+    },
     firstName: {
       type: String,
       default: 'First Name'
