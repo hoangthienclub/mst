@@ -20,7 +20,7 @@ export const register = async (req, res, next) => {
     if (!req.body.roleId) {
       req.body.roleId = 1;
     }
-    req.body.status = 1
+    req.body.status = 1;
     user = await new User({ ...req.body, email, password: hashPassword, key }).save();
 
     const accessToken = await handleToken({
@@ -61,15 +61,18 @@ export const verify = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    let user = await User.findOne(
-      { $or: [{ email }] }
-    )
-    .populate([
-      {
-        path: 'favorites',
-        model: 'users',
-      }])
-    .lean(); // dùng lean để trả về 1 kết quả JSON, nhẹ hơn
+    let user = await User.findOne({ $or: [{ email }] })
+      .populate([
+        {
+          path: 'favorites',
+          model: 'users',
+        },
+        {
+          path: 'wallet',
+          model: 'wallet',
+        },
+      ])
+      .lean(); // dùng lean để trả về 1 kết quả JSON, nhẹ hơn
 
     if (!user) return Failure(res, messages.ACCOUNT_NOT_FOUND, 404);
     const match = await bcrypt.compare(password, user.password);
@@ -108,7 +111,7 @@ export const passwordReset = async (req, res, next) => {
         }
       );
 
-      console.log("user=", user);
+      console.log('user=', user);
 
       sendMail({
         to: email,

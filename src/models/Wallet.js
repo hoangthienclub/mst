@@ -1,7 +1,7 @@
 import mongoose from '../config/database';
 const WalletSchema = new mongoose.Schema(
   {
-    currentAmount: Number,
+    currentBalance: Number,
     transactions: Array,
   },
   { timestamps: true, versionKey: false }
