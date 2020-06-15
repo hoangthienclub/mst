@@ -48,6 +48,10 @@ const ClassSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    isDelete: {
+      default: false,
+      type: Boolean
+    },
   },
   { timestamps: true, versionKey: false }
 );

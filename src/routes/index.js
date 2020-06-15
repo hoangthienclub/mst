@@ -8,6 +8,7 @@ import classes from './api/classes';
 import center from './api/center';
 import subjectLevel from './api/subjectLevel';
 import subject from './api/subject';
+import wallet from './api/wallet'
 
 export default (app) => {
   auth(app);
@@ -20,4 +21,5 @@ export default (app) => {
   center(app);
   subjectLevel(app);
   subject(app);
+  wallet(app);
 };
