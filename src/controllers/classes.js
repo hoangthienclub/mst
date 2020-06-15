@@ -1,6 +1,9 @@
 import Classes from '../models/Classes';
+import User from '../models/User';
 import { Success, Failure } from '../helpers';
 import { messages } from '../locales';
+import Transaction from '../models/Transaction';
+import Wallet from '../models/Wallet';
 
 export const getClasses = async (req, res, next) => {
   try {
@@ -157,6 +160,18 @@ export const bookClass = async (req, res, next) => {
       return Failure(res, messages.ALREADY_JOIN_CLASS, 500);
     }
     students.push(userId);
+    const user = await User.findById(userId);
+    const wallet = await Wallet.findById(user.wallet);
+    let currentBalance = wallet.currentBalance;
+    let transactions = wallet.transactions;
+    currentBalance -= classDetail.price;
+    const transactionData = {
+      amount: classDetail.price,
+      reason: `Book Class ${classDetail.title} with $${classDetail.price}`,
+    };
+    const transaction = await Transaction(transactionData).save();
+    transactions.push(transaction._id);
+    await Wallet.findOneAndUpdate({ _id: user.wallet }, { currentBalance, transactions });
     classDetail = await Classes.findOneAndUpdate({ _id: classId }, { students, status: 2 }, { returnOriginal: false });
     return Success(res, classDetail);
   } catch (err) {
