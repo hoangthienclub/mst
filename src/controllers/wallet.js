@@ -6,7 +6,7 @@ import { messages } from '../locales';
 export const getWallets = async (req, res, next) => {
   try {
     const wallets = await Wallet.find();
-    return Success(res, wallets);
+    return Success(res, { wallets });
   } catch (err) {
     return next(err);
   }
@@ -21,7 +21,7 @@ export const getWalletById = async (req, res, next) => {
         model: 'transaction',
       },
     ]);
-    return Success(res, wallet);
+    return Success(res, { wallet });
   } catch (err) {
     return next(err);
   }
@@ -52,7 +52,7 @@ export const updateAmountByWalletId = async (req, res, next) => {
     const transaction = await Transaction(transactionData).save();
     transactions.push(transaction._id);
     wallet = await Wallet.findOneAndUpdate({ _id: walletId }, { currentBalance, transactions }, { new: true });
-    return Success(res, wallet);
+    return Success(res, { wallet });
   } catch (err) {
     return next(err);
   }

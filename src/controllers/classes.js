@@ -106,7 +106,7 @@ export const getClassDetail = async (req, res, next) => {
         model: 'users',
       },
     ]);
-    return Success(res, classDetail);
+    return Success(res, { classDetail });
   } catch (err) {
     return next(err);
   }
@@ -122,7 +122,7 @@ export const createClass = async (req, res, next) => {
       centerId: user.userId,
     };
     const newClass = await Classes(newItem).save();
-    return Success(res, newClass);
+    return Success(res, { newClass });
   } catch (err) {
     return Failure(res, err);
   }
@@ -173,7 +173,7 @@ export const bookClass = async (req, res, next) => {
     transactions.push(transaction._id);
     await Wallet.findOneAndUpdate({ _id: user.wallet }, { currentBalance, transactions });
     classDetail = await Classes.findOneAndUpdate({ _id: classId }, { students, status: 2 }, { returnOriginal: false });
-    return Success(res, classDetail);
+    return Success(res, { classDetail });
   } catch (err) {
     return next(err);
   }
