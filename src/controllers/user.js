@@ -5,7 +5,9 @@ import Wallet from '../models/Wallet';
 
 export const getUsers = async (req, res, next) => {
   try {
-    let query = {};
+    let query = {
+      isDelete: false
+    };
     const { roleId, page = 1, pageSize = 10 } = req.query;
     if (roleId) {
       query.roleId = roleId;
