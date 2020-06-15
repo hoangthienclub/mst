@@ -242,7 +242,7 @@ export const createUser = async (req, res, next) => {
     data.wallet = wallet._id;
     data.status = 1;
     let user = await new User(data).save();
-    return Success(res, user);
+    return Success(res, { user });
   } catch (err) {
     return next(err);
   }
