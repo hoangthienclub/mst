@@ -39,5 +39,5 @@ export default (app) => {
   app.post('/user/favorite', isAuth, addFavorite);
   app.delete('/user/favorite', isAuth, deleteFavorite);
   app.get('/users-favorite', isAuth, getFavoritesUser);
-  app.post('/users', isAuth, createUser);
+  app.post('/users', createUser);
 };

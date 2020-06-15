@@ -43,5 +43,7 @@ export default {
   TAXONOMY_TYPE_IS_INVALID: 'Kiểu phân loại sai định dạng (Định dạng là 1, 2).',
   // Class
   CLASS_HAVE_COMPLETED: 'Lớp học này đã hoàn thành hoặc huỷ. Vui lòng chọn lớp khác.',
-  ALREADY_JOIN_CLASS: 'Bạn đã đăng ký lớp học này.'
+  ALREADY_JOIN_CLASS: 'Bạn đã đăng ký lớp học này.',
+  // Wallet
+  NOT_ENOUGH_AMOUNT: 'Số dư trong tài khoản không đủ.'
 };

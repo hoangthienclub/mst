@@ -40,6 +40,7 @@ const UserSchema = new mongoose.Schema(
     mobilePhone: String,
     phoneNumber1: String,
     phoneNumber2: String,
+    wallet: String,
   },
   { timestamps: true, versionKey: false }
 );

@@ -1,6 +1,4 @@
 import Classes from '../models/Classes';
-import User from '../models/User';
-import Center from '../models/Center';
 import { Success, Failure } from '../helpers';
 import { messages } from '../locales';
 
@@ -15,8 +13,8 @@ export const getClasses = async (req, res, next) => {
     let totalClass = 0;
     let classes = [];
     if (status !== '5') {
-      totalClass = await Classes.count(query);
-      classes = await Classes.find(query)
+      totalClass = await Classes.count({ ...query, isDelete: false });
+      classes = await Classes.find({ ...query, isDelete: false })
         .populate([
           {
             path: 'tutor',
@@ -45,8 +43,8 @@ export const getClasses = async (req, res, next) => {
     }
     if (status === '5') {
       delete query.status;
-      totalClass = await Classes.count({ $or: [{ status: 3 }, { status: 4 }] });
-      classes = await Classes.find({ $or: [{ status: 4 }, { status: 3 }] })
+      totalClass = await Classes.count({ isDelete: false, $or: [{ status: 3 }, { status: 4 }] });
+      classes = await Classes.find({ isDelete: false, $or: [{ status: 4 }, { status: 3 }] })
         .populate([
           {
             path: 'tutor',
@@ -91,7 +89,7 @@ export const getClasses = async (req, res, next) => {
 export const getClassDetail = async (req, res, next) => {
   try {
     const { classId } = req.params;
-    const classDetail = await Classes.findOne({ _id: classId }).populate([
+    const classDetail = await Classes.findOne({ _id: classId, isDelete: false }).populate([
       {
         path: 'tutor',
         model: 'users',
@@ -127,10 +125,19 @@ export const createClass = async (req, res, next) => {
   }
 };
 
-export const deleteAllClass = async (req, res, next) => {
+export const deleteClasses = async (req, res, next) => {
   try {
-    let query = {};
-    await Classes.remove(query);
+    const { classIds } = req.body;
+    await Classes.updateMany(
+      {
+        _id: {
+          $in: classIds,
+        },
+      },
+      {
+        isDelete: true,
+      }
+    );
     return Success(res, {});
   } catch (err) {
     return next(err);
@@ -168,8 +175,8 @@ export const getRegisteredClasses = async (req, res, next) => {
     let totalClass = 0;
     let classes = [];
     if (status !== '5') {
-      totalClass = await Classes.count({ ...query, students: { $in: [userId] } });
-      classes = await Classes.find({ ...query, students: { $in: [userId] } })
+      totalClass = await Classes.count({ ...query, students: { $in: [userId], isDelete: false } });
+      classes = await Classes.find({ ...query, students: { $in: [userId], isDelete: false } })
         .populate([
           {
             path: 'tutor',
@@ -190,8 +197,8 @@ export const getRegisteredClasses = async (req, res, next) => {
     }
     if (status === '5') {
       delete query.status;
-      totalClass = await Classes.count({ $or: [{ status: 3 }, { status: 4 }], students: { $in: [userId] } });
-      classes = await Classes.find({ $or: [{ status: 4 }, { status: 3 }], students: { $in: [userId] } })
+      totalClass = await Classes.count({ isDelete: false, $or: [{ status: 3 }, { status: 4 }], students: { $in: [userId] } });
+      classes = await Classes.find({ isDelete: false, $or: [{ status: 4 }, { status: 3 }], students: { $in: [userId] } })
         .populate([
           {
             path: 'tutor',
