@@ -270,7 +270,10 @@ export const listClassByTime = async (req, res, next) => {
         },
       ])
       .sort({ createdAt: -1 });
-    return Success(res, classes);
+    return Success(res, {
+      totalClasses: 0,
+      classes,
+    });
   } catch (err) {
     console.log(err)
     return Failure(res, err);
