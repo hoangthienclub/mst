@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 export const nodeEnv = process.env.NODE_ENV || 'production';
 export const appName = process.env.APP_NAME || 'MySavvyTutor.Test';
-export const appPort = process.env.PORT || process.env.APP_PORT || 7777;
+export const appPort = process.env.PORT || process.env.APP_PORT || 6789;
 export const appEmail = process.env.APP_EMAIL || 'khanh.nguyen@saigonvalley.com';
 
 export const timeOut = process.env.TIME_OUT || 10000;
