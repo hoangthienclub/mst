@@ -84,6 +84,7 @@ export const getUserByUserId = async (req, res, next) => {
       {
         path: 'wallet',
         model: 'wallet',
+        select: '_id currentBalance'
       },
     ]);
 
