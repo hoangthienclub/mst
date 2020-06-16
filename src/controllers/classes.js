@@ -190,8 +190,8 @@ export const getRegisteredClasses = async (req, res, next) => {
     let totalClass = 0;
     let classes = [];
     if (status !== '5') {
-      totalClass = await Classes.count({ ...query, students: { $in: [userId], isDelete: false } });
-      classes = await Classes.find({ ...query, students: { $in: [userId], isDelete: false } })
+      totalClass = await Classes.count({ ...query, students: { $in: [userId] }, isDelete: false });
+      classes = await Classes.find({ ...query, students: { $in: [userId] }, isDelete: false })
         .populate([
           {
             path: 'tutor',

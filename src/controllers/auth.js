@@ -70,6 +70,7 @@ export const login = async (req, res, next) => {
         {
           path: 'wallet',
           model: 'wallet',
+          select: '_id currentBalance'
         },
       ])
       .lean(); // dùng lean để trả về 1 kết quả JSON, nhẹ hơn
