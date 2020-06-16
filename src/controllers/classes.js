@@ -268,6 +268,14 @@ export const listClassByTime = async (req, res, next) => {
           path: 'center',
           model: 'users',
         },
+        {
+          path: 'subject',
+          model: 'subject',
+        },
+        {
+          path: 'subjectLevel',
+          model: 'subjectlevel',
+        },
       ])
       .sort({ createdAt: -1 });
     return Success(res, {
