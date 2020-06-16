@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { getClasses, createClass, deleteClasses, getClassDetail, bookClass, getRegisteredClasses } from '../../controllers/classes';
+import { getClasses, createClass, deleteClasses, getClassDetail, bookClass, getRegisteredClasses, listClassByTime } from '../../controllers/classes';
 import { isAuth } from '../../middleware/auth';
 
 export default (app) => {
@@ -9,4 +9,5 @@ export default (app) => {
   app.delete('/classes', isAuth, deleteClasses);
   app.post('/bookClass/:classId', isAuth, bookClass);
   app.get('/registeredClasses', isAuth, getRegisteredClasses);
+  app.get('/listClassByTime', isAuth, listClassByTime);
 };

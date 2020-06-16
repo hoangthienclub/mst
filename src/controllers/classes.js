@@ -239,3 +239,40 @@ export const getRegisteredClasses = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const listClassByTime = async (req, res, next) => {
+  try {
+    const { from, to } = req.query;
+    const userId = req.authorization.userId;
+
+    const query = {
+      status: 2,
+      startTime: {
+        $gte: +from,
+        $lt: +to
+      },
+      isDelete: false
+    }
+    console.log(query)
+    const classes = await Classes.find({ ...query, students: { $in: [userId] } })
+      .populate([
+        {
+          path: 'tutor',
+          model: 'users',
+        },
+        {
+          path: 'students',
+          model: 'users',
+        },
+        {
+          path: 'center',
+          model: 'users',
+        },
+      ])
+      .sort({ createdAt: -1 });
+    return Success(res, classes);
+  } catch (err) {
+    console.log(err)
+    return Failure(res, err);
+  }
+};
