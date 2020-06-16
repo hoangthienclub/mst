@@ -21,7 +21,7 @@ export const getWalletById = async (req, res, next) => {
     const userId = user._id.toString();
     const classes = await Classes.find({ isDelete: false, status: 3, students: { $in: [userId] } });
     const totalClass = classes.length;
-    const wallet = await Wallet.find({ _id: walletId }).populate([
+    const wallet = await Wallet.findOne({ _id: walletId }).populate([
       {
         path: 'transactions',
         model: 'transaction',
