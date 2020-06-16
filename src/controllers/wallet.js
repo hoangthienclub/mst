@@ -2,6 +2,8 @@ import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
 import { Success, Failure } from '../helpers';
 import { messages } from '../locales';
+import User from '../models/User';
+import Classes from '../models/Classes';
 
 export const getWallets = async (req, res, next) => {
   try {
@@ -15,13 +17,17 @@ export const getWallets = async (req, res, next) => {
 export const getWalletById = async (req, res, next) => {
   try {
     const { walletId } = req.params;
+    const user = await User.findOne({ wallet: walletId });
+    const userId = user._id.toString();
+    const classes = await Classes.find({ isDelete: false, status: 3, students: { $in: [userId] } });
+    const totalClass = classes.length;
     const wallet = await Wallet.find({ _id: walletId }).populate([
       {
         path: 'transactions',
         model: 'transaction',
       },
     ]);
-    return Success(res, { wallet });
+    return Success(res, { wallet, completedClass: totalClass });
   } catch (err) {
     return next(err);
   }
