@@ -30,6 +30,7 @@ export const register = async (req, res, next) => {
     });
     return Success(res, { accessToken, user });
   } catch (err) {
+    console.log(err)
     return next(err);
   }
 };

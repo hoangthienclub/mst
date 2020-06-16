@@ -244,8 +244,9 @@ export const listClassByTime = async (req, res, next) => {
   try {
     const { from, to } = req.query;
     const userId = req.authorization.userId;
+    const roleId = req.authorization.role;
 
-    const query = {
+    let query = {
       status: 2,
       startTime: {
         $gte: +from,
@@ -253,8 +254,13 @@ export const listClassByTime = async (req, res, next) => {
       },
       isDelete: false
     }
-    console.log(query)
-    const classes = await Classes.find({ ...query, students: { $in: [userId] } })
+    if (roleId === 1) {
+      query.students = { $in: [userId] };
+    }
+    if (roleId === 2) {
+      query.userId = userId;
+    }
+    const classes = await Classes.find({ ...query })
       .populate([
         {
           path: 'tutor',
