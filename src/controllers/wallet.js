@@ -37,6 +37,10 @@ export const updateAmountByWalletId = async (req, res, next) => {
   try {
     const { walletId } = req.params;
     const { action, amount } = req.body;
+    const user = await User.findOne({ wallet: walletId });
+    const userId = user._id.toString();
+    const classes = await Classes.find({ isDelete: false, status: 3, students: { $in: [userId] } });
+    const totalClass = classes.length;
     let wallet = await Wallet.findById(walletId);
     let currentBalance = wallet.currentBalance;
     let transactions = wallet.transactions;
@@ -57,8 +61,13 @@ export const updateAmountByWalletId = async (req, res, next) => {
     };
     const transaction = await Transaction(transactionData).save();
     transactions.push(transaction._id);
-    wallet = await Wallet.findOneAndUpdate({ _id: walletId }, { currentBalance, transactions }, { new: true });
-    return Success(res, { wallet });
+    wallet = await Wallet.findOneAndUpdate({ _id: walletId }, { currentBalance, transactions }, { new: true }).populate([
+      {
+        path: 'transactions',
+        model: 'transaction',
+      },
+    ]);
+    return Success(res, { wallet, completedClass: totalClass });
   } catch (err) {
     return next(err);
   }
