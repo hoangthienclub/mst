@@ -25,6 +25,7 @@ export const getWalletById = async (req, res, next) => {
       {
         path: 'transactions',
         model: 'transaction',
+        options: { sort: { createdAt: -1 } },
       },
     ]);
     return Success(res, { wallet, completedClass: totalClass });
@@ -65,6 +66,7 @@ export const updateAmountByWalletId = async (req, res, next) => {
       {
         path: 'transactions',
         model: 'transaction',
+        options: { sort: { createdAt: -1 } },
       },
     ]);
     return Success(res, { wallet, completedClass: totalClass });
