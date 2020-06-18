@@ -9,6 +9,8 @@ import {
   getSettingsByCenterId,
   getClassesByCenterId,
   deleteCenters,
+  deactivateCenterById,
+  updateCenterById,
 } from '../../controllers/center';
 import { isAuth } from '../../middleware/auth';
 
@@ -22,4 +24,6 @@ export default (app) => {
   app.get('/centers/:centerId/settings', isAuth, getSettingsByCenterId);
   app.get('/centers/:centerId/classes', isAuth, getClassesByCenterId);
   app.delete('/centers/', isAuth, deleteCenters);
+  app.patch('/centers/:centerId', isAuth, deactivateCenterById);
+  app.put('/centers/:centerId', isAuth, updateCenterById);
 };

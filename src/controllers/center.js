@@ -3,9 +3,7 @@ import { Success, Failure } from '../helpers';
 
 export const getCenters = async (req, res, next) => {
   try {
-    let query = {
-      isDelete: false,
-    };
+    let query = {};
     const { page = 1, pageSize = 10 } = req.query;
 
     if (req.query.search) {
@@ -152,6 +150,28 @@ export const getClassesByCenterId = async (req, res, next) => {
     ]);
     const classes = center.classes;
     return Success(res, { classes });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const deactivateCenterById = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const { deactive } = req.body;
+    await Center.findOneAndUpdate({ _id: centerId }, { isDelete: deactive });
+    return Success(res, {});
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const updateCenterById = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const data = req.body;
+    const center = await Center.findOneAndUpdate({ _id: centerId }, { $set: data }, {new: true});
+    return Success(res, { center });
   } catch (err) {
     return next(err);
   }
