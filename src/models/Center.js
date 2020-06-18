@@ -9,6 +9,10 @@ const CenterSchema = new mongoose.Schema(
     admins: Array,
     students: Array,
     classes: Array,
+    isDelete: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true, versionKey: false }
 );

@@ -1,10 +1,16 @@
 import Center from '../models/Center';
 import { Success, Failure } from '../helpers';
 
-export const getAllCenter = async (req, res, next) => {
+export const getCenters = async (req, res, next) => {
   try {
-    let query = {};
+    let query = {
+      isDelete: false
+    };
     const { page = 1, pageSize = 10 } = req.query;
+
+    if (req.query.search) {
+      query.name = { $regex: new RegExp(req.query.search, 'i') };
+    }
 
     const centers = await Center.find(query)
       .populate([

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import {
-  getAllCenter,
+  getCenters,
   createCenter,
   getCenterById,
   getStudentsByCenterId,
@@ -12,7 +12,7 @@ import {
 import { isAuth } from '../../middleware/auth';
 
 export default (app) => {
-  app.get('/centers', isAuth, getAllCenter);
+  app.get('/centers', isAuth, getCenters);
   app.post('/center', isAuth, createCenter);
   app.get('/centers/:centerId', isAuth, getCenterById);
   app.get('/centers/:centerId/students', isAuth, getStudentsByCenterId);
