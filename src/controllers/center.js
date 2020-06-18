@@ -4,7 +4,7 @@ import { Success, Failure } from '../helpers';
 export const getCenters = async (req, res, next) => {
   try {
     let query = {
-      isDelete: false
+      isDelete: false,
     };
     const { page = 1, pageSize = 10 } = req.query;
 
@@ -12,6 +12,7 @@ export const getCenters = async (req, res, next) => {
       query.name = { $regex: new RegExp(req.query.search, 'i') };
     }
 
+    const totalCenter = await Center.count(query);
     const centers = await Center.find(query)
       .populate([
         {
@@ -33,7 +34,7 @@ export const getCenters = async (req, res, next) => {
       ])
       .limit(+pageSize)
       .skip((+page - 1) * +pageSize);
-    return Success(res, { centers });
+    return Success(res, { totalCenters: totalCenter, centers });
   } catch (err) {
     return next(err);
   }
