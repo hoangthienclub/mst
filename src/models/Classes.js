@@ -40,8 +40,8 @@ const ClassSchema = new mongoose.Schema(
       required: true
     },
     students: Array,
-    userId: {
-      type: String,
+    tutors: {
+      type: Array,
       required: true
     },
     price: {
@@ -58,12 +58,6 @@ const ClassSchema = new mongoose.Schema(
 ClassSchema.virtual('center', {
   ref: 'center',
   localField: 'centerId',
-  foreignField: '_id',
-  justOne: true,
-});
-ClassSchema.virtual('tutor', {
-  ref: 'users',
-  localField: 'userId',
   foreignField: '_id',
   justOne: true,
 });

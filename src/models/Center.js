@@ -4,6 +4,11 @@ const CenterSchema = new mongoose.Schema(
     name: String,
     avatar: String,
     rating: Number,
+    settings: Object,
+    tutors: Array,
+    admins: Array,
+    students: Array,
+    classes: Array,
   },
   { timestamps: true, versionKey: false }
 );

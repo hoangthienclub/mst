@@ -20,7 +20,7 @@ export const getClasses = async (req, res, next) => {
       classes = await Classes.find({ ...query, isDelete: false })
         .populate([
           {
-            path: 'tutor',
+            path: 'tutors',
             model: 'users',
           },
           {
@@ -50,7 +50,7 @@ export const getClasses = async (req, res, next) => {
       classes = await Classes.find({ isDelete: false, $or: [{ status: 4 }, { status: 3 }] })
         .populate([
           {
-            path: 'tutor',
+            path: 'tutors',
             model: 'users',
           },
           {
@@ -94,7 +94,7 @@ export const getClassDetail = async (req, res, next) => {
     const { classId } = req.params;
     const classDetail = await Classes.findOne({ _id: classId, isDelete: false }).populate([
       {
-        path: 'tutor',
+        path: 'tutors',
         model: 'users',
       },
       {
@@ -194,7 +194,7 @@ export const getRegisteredClasses = async (req, res, next) => {
       classes = await Classes.find({ ...query, students: { $in: [userId] }, isDelete: false })
         .populate([
           {
-            path: 'tutor',
+            path: 'tutors',
             model: 'users',
           },
           {
@@ -216,7 +216,7 @@ export const getRegisteredClasses = async (req, res, next) => {
       classes = await Classes.find({ isDelete: false, $or: [{ status: 4 }, { status: 3 }], students: { $in: [userId] } })
         .populate([
           {
-            path: 'tutor',
+            path: 'tutors',
             model: 'users',
           },
           {
@@ -258,7 +258,7 @@ export const listClassByTime = async (req, res, next) => {
     const classes = await Classes.find({ ...query })
       .populate([
         {
-          path: 'tutor',
+          path: 'tutors',
           model: 'users',
         },
         {

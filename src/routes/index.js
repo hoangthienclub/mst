@@ -9,6 +9,7 @@ import center from './api/center';
 import subjectLevel from './api/subjectLevel';
 import subject from './api/subject';
 import wallet from './api/wallet'
+import notifications from './api/notifications';
 
 export default (app) => {
   auth(app);
@@ -22,4 +23,5 @@ export default (app) => {
   subjectLevel(app);
   subject(app);
   wallet(app);
+  notifications(app);
 };

@@ -4,6 +4,7 @@ import { Success, Failure } from '../helpers';
 import { messages } from '../locales';
 import User from '../models/User';
 import Classes from '../models/Classes';
+import Notification from '../models/Notification';
 
 export const getWallets = async (req, res, next) => {
   try {
@@ -69,6 +70,12 @@ export const updateAmountByWalletId = async (req, res, next) => {
         options: { sort: { createdAt: -1 } },
       },
     ]);
+    const notificationData = {
+      content: `Make ${action} transaction with $${amount}`,
+      read: false,
+      user: userId
+    };
+    await Notification(notificationData).save();
     return Success(res, { wallet, completedClass: totalClass });
   } catch (err) {
     return next(err);
