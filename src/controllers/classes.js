@@ -242,16 +242,11 @@ export const getRegisteredClasses = async (req, res, next) => {
 
 export const listClassByTime = async (req, res, next) => {
   try {
-    const { from, to } = req.query;
     const userId = req.authorization.userId;
     const roleId = req.authorization.role;
 
     let query = {
       status: 2,
-      startTime: {
-        $gte: +from,
-        $lt: +to
-      },
       isDelete: false
     }
     if (roleId === 1) {
