@@ -8,6 +8,7 @@ import {
   getAdminsByCenterId,
   getSettingsByCenterId,
   getClassesByCenterId,
+  deleteCenterByCenterId,
 } from '../../controllers/center';
 import { isAuth } from '../../middleware/auth';
 
@@ -20,4 +21,5 @@ export default (app) => {
   app.get('/centers/:centerId/admins', isAuth, getAdminsByCenterId);
   app.get('/centers/:centerId/settings', isAuth, getSettingsByCenterId);
   app.get('/centers/:centerId/classes', isAuth, getClassesByCenterId);
+  app.delete('/centers/:centerId', isAuth, deleteCenterByCenterId);
 };

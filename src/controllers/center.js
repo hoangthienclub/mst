@@ -156,3 +156,14 @@ export const getClassesByCenterId = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const deleteCenterByCenterId = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+
+    await Center.findOneAndUpdate({ _id: centerId }, { isDelete: true });
+    return Success(res, {});
+  } catch (err) {
+    return next(err);
+  }
+};
