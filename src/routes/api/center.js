@@ -16,7 +16,7 @@ import { isAuth } from '../../middleware/auth';
 
 export default (app) => {
   app.get('/centers', isAuth, getCenters);
-  app.post('/center', isAuth, createCenter);
+  app.post('/centers', isAuth, createCenter);
   app.get('/centers/:centerId', isAuth, getCenterById);
   app.get('/centers/:centerId/students', isAuth, getStudentsByCenterId);
   app.get('/centers/:centerId/tutors', isAuth, getTutorsByCenterId);
