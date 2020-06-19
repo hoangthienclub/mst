@@ -5,6 +5,7 @@ import { messages } from '../locales';
 import User from '../models/User';
 import Classes from '../models/Classes';
 import Notification from '../models/Notification';
+import moment from 'moment';
 
 export const getWallets = async (req, res, next) => {
   try {
@@ -18,19 +19,34 @@ export const getWallets = async (req, res, next) => {
 export const getWalletById = async (req, res, next) => {
   try {
     const { walletId } = req.params;
+    const { page = 1, pageSize = 10 } = req.query;
     const user = await User.findOne({ wallet: walletId });
     const userId = user._id.toString();
     const classes = await Classes.find({ isDelete: false, status: 3, students: { $in: [userId] } });
     const totalClass = classes.length;
-    const wallet = await Wallet.findOne({ _id: walletId }).populate([
-      {
-        path: 'transactions',
-        model: 'transaction',
-        options: { sort: { createdAt: -1 } },
-      },
-    ]);
-    return Success(res, { wallet, completedClass: totalClass });
+    let populate = {
+      path: 'transactions',
+      model: 'transaction',
+      options: { 
+        sort: { createdAt: -1 },
+        limit: +pageSize,
+        skip: (+page - 1) * +pageSize,
+      }
+    }
+    if (req.query.startTime && req.query.endTime) {
+      populate.match = { 
+        createdAt: {
+          $gte: moment.unix(+req.query.startTime).format(),
+          $lt: moment.unix(+req.query.endTime).format()
+        }
+      }
+    }
+    const wallet = await Wallet.findOne({ _id: walletId }).populate(populate).lean();
+    let totalTransactions = await Wallet.findOne({ _id: walletId }).lean();
+    totalTransactions = totalTransactions.transactions.length;
+    return Success(res, { wallet: {...wallet, totalTransactions }, completedClass: totalClass });
   } catch (err) {
+    console.log(err)
     return next(err);
   }
 };
