@@ -1,11 +1,16 @@
 import Center from '../models/Center';
 import { Success, Failure } from '../helpers';
 
-export const getAllCenter = async (req, res, next) => {
+export const getCenters = async (req, res, next) => {
   try {
     let query = {};
     const { page = 1, pageSize = 10 } = req.query;
 
+    if (req.query.search) {
+      query.name = { $regex: new RegExp(req.query.search, 'i') };
+    }
+
+    const totalCenter = await Center.count(query);
     const centers = await Center.find(query)
       .populate([
         {
@@ -27,7 +32,7 @@ export const getAllCenter = async (req, res, next) => {
       ])
       .limit(+pageSize)
       .skip((+page - 1) * +pageSize);
-    return Success(res, { centers });
+    return Success(res, { totalCenters: totalCenter, centers });
   } catch (err) {
     return next(err);
   }
@@ -145,6 +150,47 @@ export const getClassesByCenterId = async (req, res, next) => {
     ]);
     const classes = center.classes;
     return Success(res, { classes });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const deactivateCenterById = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const { deactive } = req.body;
+    await Center.findOneAndUpdate({ _id: centerId }, { isDelete: deactive });
+    return Success(res, {});
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const updateCenterById = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const data = req.body;
+    const center = await Center.findOneAndUpdate({ _id: centerId }, { $set: data }, {new: true});
+    return Success(res, { center });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const deleteCenters = async (req, res, next) => {
+  try {
+    const { centerIds } = req.body;
+    await Center.updateMany(
+      {
+        _id: {
+          $in: centerIds,
+        },
+      },
+      {
+        isDelete: true,
+      }
+    );
+    return Success(res, {});
   } catch (err) {
     return next(err);
   }
