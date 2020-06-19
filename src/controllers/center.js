@@ -170,7 +170,25 @@ export const updateCenterById = async (req, res, next) => {
   try {
     const { centerId } = req.params;
     const data = req.body;
-    const center = await Center.findOneAndUpdate({ _id: centerId }, { $set: data }, {new: true});
+    await Center.findOneAndUpdate({ _id: centerId }, { $set: data }, {new: true});
+    const center = await Center.findOne({ _id: centerId }).populate([
+      {
+        path: 'tutors',
+        model: 'users',
+      },
+      {
+        path: 'students',
+        model: 'users',
+      },
+      {
+        path: 'admins',
+        model: 'users',
+      },
+      {
+        path: 'classes',
+        model: 'class',
+      },
+    ]);
     return Success(res, { center });
   } catch (err) {
     return next(err);
