@@ -13,8 +13,9 @@ export const getNotifications = async (req, res, next) => {
 export const getNotificationByUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
+    const totalNotification = await Notification.count({ user: userId, isDelete: false });
     const notifications = await Notification.find({ user: userId, isDelete: false });
-    return Success(res, { notifications });
+    return Success(res, { totalNotifications: totalNotification, notifications });
   } catch (err) {
     return next(err);
   }
