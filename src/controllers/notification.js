@@ -29,3 +29,23 @@ export const deleteUserNotifications = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const createUserNotifications = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const notification = await new Notification(data).save();
+    return Success(res, { notification });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const updateNotification = async (req, res, next) => {
+  try {
+    const { notificationId } = req.params;
+    const notification = await Notification.findOneAndUpdate({ _id: notificationId }, { read: true }, { new: true });
+    return Success(res, { notification });
+  } catch (err) {
+    return next(err);
+  }
+};

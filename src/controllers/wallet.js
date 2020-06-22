@@ -27,26 +27,26 @@ export const getWalletById = async (req, res, next) => {
     let populate = {
       path: 'transactions',
       model: 'transaction',
-      options: { 
+      options: {
         sort: { createdAt: -1 },
         limit: +pageSize,
         skip: (+page - 1) * +pageSize,
-      }
-    }
+      },
+    };
     if (req.query.startTime && req.query.endTime) {
-      populate.match = { 
+      populate.match = {
         createdAt: {
           $gte: moment.unix(+req.query.startTime).format(),
-          $lt: moment.unix(+req.query.endTime).format()
-        }
-      }
+          $lt: moment.unix(+req.query.endTime).format(),
+        },
+      };
     }
     const wallet = await Wallet.findOne({ _id: walletId }).populate(populate).lean();
     let totalTransactions = await Wallet.findOne({ _id: walletId }).lean();
     totalTransactions = totalTransactions.transactions.length;
-    return Success(res, { wallet: {...wallet, totalTransactions }, completedClass: totalClass });
+    return Success(res, { wallet: { ...wallet, totalTransactions }, completedClass: totalClass });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return next(err);
   }
 };
@@ -89,7 +89,8 @@ export const updateAmountByWalletId = async (req, res, next) => {
     const notificationData = {
       content: `Make ${action} transaction with $${amount}`,
       read: false,
-      user: userId
+      user: userId,
+      type: 'wallet',
     };
     await Notification(notificationData).save();
     return Success(res, { wallet, completedClass: totalClass });
