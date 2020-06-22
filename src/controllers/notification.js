@@ -13,9 +13,19 @@ export const getNotifications = async (req, res, next) => {
 export const getNotificationByUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const { pageSize = 10, page = 1 } = req.query;
-    const totalNotification = await Notification.count({ user: userId, isDelete: false });
-    const notifications = await Notification.find({ user: userId, isDelete: false })
+    const { pageSize = 10, page = 1, status = 'unread' } = req.query;
+    let query = {
+      user: userId,
+      isDelete: false,
+    };
+    if (status === 'unread') {
+      query.read = false;
+    }
+    if (status === 'all') {
+      delete query.read;
+    }
+    const totalNotification = await Notification.count(query);
+    const notifications = await Notification.find(query)
       .limit(+pageSize)
       .skip((+page - 1) * +pageSize)
       .sort({ read: 1, updatedAt: -1 });
